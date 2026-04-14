@@ -5,9 +5,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <string>
 
-using std::vector;
-using namespace std;
+
 
 namespace colors
 {
@@ -29,15 +29,16 @@ public:
     SudokuBoard(const std::vector<std::vector<int>> &initial) ;
     void getCell();
     // fn to check if the move is legal
-    bool isvalid(int r, int c, int value);
+    bool isvalid(int r, int c, int value)const;
     bool setboard(int r, int c, int value);
     int getValue(int r, int c) const;
     void setValue(int r, int c, int value);
+    bool isValidForSolver(int r, int c, int value)const;
 
       // fn to save a game
-    bool save(const string &filename);
+    bool save(const std::string &filename);
 
-    bool loadFromFile(const string &filename);
+    bool loadFromFile(const std::string &filename);
 
 };
 

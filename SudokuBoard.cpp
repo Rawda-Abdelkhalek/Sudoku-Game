@@ -44,19 +44,26 @@ void SudokuBoard::getCell()
                 if (x == 3 || x == 6)
                     cout << colors ::GRAY << " | " << colors ::RESET;
                 if (board[y][x] != 0)
-                    cout << colors::GREEN << board[y][x] << " " << colors ::RESET;
+                {
+                    if (locked[y][x] == 1)
+                        cout << colors::GRAY << board[y][x] << " "<<colors::RESET;   // locked
+                    else
+                        cout << colors::GREEN << board[y][x] << " "<<colors::RESET;  // user/solver
+                }
                 else
-                    cout << colors::WHITE << ". " << colors::RESET;
-            }
-            cout << endl;
+                {
+                    cout << colors::WHITE << ". ";
+                }
+                        }
+                cout << endl;
         }
         cout << colors::RESET << endl
              << "enter acommad : ";
     }
+    
 
 
-
-bool SudokuBoard::isvalid(int r, int c, int value)
+bool SudokuBoard::isvalid(int r, int c, int value) const
     {
 
         // make sure we are on the board
@@ -110,6 +117,29 @@ bool SudokuBoard::isvalid(int r, int c, int value)
         return true;
     };
 
+bool SudokuBoard::isValidForSolver(int r, int c, int value) const
+{
+    if (r < 0 || r >= 9 || c < 0 || c >= 9) return false;
+    if (value < 1 || value > 9) return false;
+
+
+    for (int i = 0; i < 9; ++i)
+        if (board[r][i] == value) return false;
+
+    for (int i = 0; i < 9; ++i)
+        if (board[i][c] == value) return false;
+
+    int br = (r/3)*3;
+    int bc = (c/3)*3;
+
+    for (int i = br; i < br+3; ++i)
+        for (int j = bc; j < bc+3; ++j)
+            if (board[i][j] == value) return false;
+
+    return true;
+};
+
+
 
 bool SudokuBoard::setboard(int r, int c, int value)
 {
@@ -119,7 +149,7 @@ bool SudokuBoard::setboard(int r, int c, int value)
         return true;
     };
     return false;
-}
+};
 
 
    bool  SudokuBoard::save(const string &filename)
@@ -144,7 +174,7 @@ bool SudokuBoard::setboard(int r, int c, int value)
         }
         // close the file and retrun true
         return true;
-    }
+    };
 
  bool SudokuBoard::loadFromFile(const string &filename)
     {
@@ -167,13 +197,16 @@ bool SudokuBoard::setboard(int r, int c, int value)
             }
         }
         return true;
-    }
+    };
 int SudokuBoard::getValue(int r, int c) const
 {
     return board[r][c];
-}
+};
 
 void SudokuBoard::setValue(int r, int c, int value)
 {
+    if (locked[r][c] == 1)
+        return;
+
     board[r][c] = value;
 }

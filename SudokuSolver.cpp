@@ -14,7 +14,7 @@ SudokuSolver::SudokuSolver(){};
                     // loop through all legal value of the square
                     for (int v = 1; v < 10; ++v)
                     {
-                        if (board.isvalid(r, c, v))
+                        if (board.isValidForSolver(r, c, v))
                         {
                             board.setValue(r,c,v);
                             // check if we found the right values by  recursivly calling solve
